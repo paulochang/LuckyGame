@@ -9,7 +9,7 @@ public class BetEndpoint : Endpoint<CreateBetRequest, BetReponse>
     private int _account = 10000;
     public override void Configure()
     {
-        Post("/api/bet/create");
+        Post("/api/bet");
         AllowAnonymous();
     }
 
@@ -22,13 +22,15 @@ public class BetEndpoint : Endpoint<CreateBetRequest, BetReponse>
         Debug.Print(randNumber.ToString());
         BetReponse response;
         if (randNumber == req.Number) {
+            _account += req.Points;
             response = new BetReponse()
             {
-                Account = _account + req.Points,
+                Account = _account,
                 Points = "+" + req.Points,
                 Status = "won"
             };
         } else {
+            _account += req.Points;
             response = new BetReponse()
             {
                 Account = _account - req.Points,
